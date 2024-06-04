@@ -1,0 +1,30 @@
+{
+  "name": "backend",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gpalacios2001/reactDev.git"
+  },
+  "author": "Gabe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gpalacios2001/reactDev/issues"
+  },
+  "homepage": "https://github.com/gpalacios2001/reactDev#readme",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.7",
+    "nodemon": "^3.1.3"
+  }
+}
