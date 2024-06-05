@@ -1,6 +1,7 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
-const morgan = require('morgan')
+const Person = require('./models/person')
 const cors = require('cors')
 
 app.use(cors())
@@ -41,14 +42,16 @@ const requestLogger = (request, response, next) => {
   console.log('---')
   next()
 }
+/*
 morgan.token('req-body', (req) => {
   return JSON.stringify(req.body);
 })
 
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :req-body'))
+//app.use(morgan(':method :url :status :res[content-length] - :response-time ms :req-body'))
+*/
 
 app.use(express.json())
-app.use(requestLogger)
+//app.use(requestLogger)
 app.use(express.static('dist'))
 
 const unknownEndpoint = (request, response) => {
@@ -65,7 +68,9 @@ app.get('/info', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-  response.json(persons)
+  Person.find({}).then(persons => {
+    response.json(persons)
+  })
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -92,20 +97,15 @@ app.post('/api/persons', (request, response) => {
   console.log('should print')
   const body = request.body
   console.log("au",body.name, body.number)
-  if ((persons.map(person => person.name)).includes(body.name) || 
-body.name === null || body.number === null) {
-  console.log('name must be unique')
-  return
-}
-  const person = {
-    id: generateId(),
+ 
+  const person = new Person ({
     name: body.name,
     number: body.number
-  }
-  persons = persons.concat(person)
-  console.log(persons)
-  
-  response.json(person)
+  })
+  person.save().then(savedPerson => {
+    console.log('worked', savedPerson)
+    response.json(savedPerson)
+  })
   
 })
 const generateId = () => {
@@ -119,7 +119,7 @@ const generateId = () => {
 
 app.use(unknownEndpoint)
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
