@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 notes/backend/.env
+blog/backend/.env
 
 # Editor directories and files
 .vscode/*
